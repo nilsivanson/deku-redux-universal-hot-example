@@ -57,7 +57,7 @@ server.use((request, response, next) => {
 
     // TODO: somehow make sure all components have their data before proceeding
 
-    let state = redux.getState();
+    let state = appTree.sources.currentReduxState;
 
     // TODO: implement handler for 404 with status code
     // TODO: implement handler for 500 with status code
