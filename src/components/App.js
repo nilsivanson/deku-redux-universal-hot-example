@@ -3,12 +3,11 @@ import {MainMenu} from './index';
 
 export const propTypes = {
     header: {type: 'object', source: 'currentHeader'},
-    page: {type: 'object', source: 'currentPage'},
-    reduxState: {type: 'object', source: 'currentReduxState'}
+    page: {type: 'object', source: 'currentPage'}
 };
 
 export function render({props}) {
-    let {page, header, reduxState} = props;
+    let {page, header} = props;
 
     return (
             <div>

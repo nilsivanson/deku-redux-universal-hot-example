@@ -39,13 +39,12 @@ export default function AppTreeFactory(state, request) {
 
     const appTree = deku().use(AppRouter(router));
     if (isServerSide) appTree.option('validateProps', true);
-    appTree.set('currentRedux', redux);
-    appTree.set('currentReduxState', redux.getState());
-    appTree.set('loaded', new Date().toString());
+    appTree.set('redux', redux);
+    updateState(appTree);
 
     // subscribe app tree to redux changes in state and store a handler for teardown
-    const unsubscribeRedux = redux.subscribe(() => appTree.set('currentReduxState', redux.getState()));
-    appTree.set('currentReduxUnsubscribe', unsubscribeRedux);
+    const unsubscribeRedux = redux.subscribe(() => updateState(appTree));
+    appTree.set('reduxUnsubscribe', unsubscribeRedux);
 
     // mount the application container on the application tree
     appTree.mount(<App/>);
@@ -58,4 +57,16 @@ export default function AppTreeFactory(state, request) {
     }
 
     return appTree;
+}
+
+function updateState(appTree) {
+    const redux = appTree.sources.redux;
+    const state = redux.getState();
+
+    // set minimal values on the app tree for each store so that we can use them
+    // directly on props
+    const keys = Object.keys(state);
+    keys.forEach((key) => {
+        appTree.set(key, state[key]);
+    });
 }

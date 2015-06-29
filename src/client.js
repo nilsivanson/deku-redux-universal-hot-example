@@ -12,10 +12,10 @@ if (module.hot) {
     module.hot.accept();
     module.hot.dispose(function() {
         // get current state and store as if sending from server
-        window.__state = appTree.sources.currentReduxState;
+        window.__state = appTree.sources.redux.getCurrentState();
 
         // unsubscribe from current redux
-        appTree.sources.currentReduxUnsubscribe();
+        appTree.sources.reduxUnsubscribe();
 
         // teardown last app before rendering new one
         remove();

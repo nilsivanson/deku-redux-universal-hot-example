@@ -30,13 +30,12 @@ function renderInfoBar({props}) {
 const InfoBar = {propTypes: propTypesInfoBar, render: renderInfoBar};
 
 const propTypes = {
-    redux: {type: 'object', source: 'currentRedux'},
-    reduxState: {type: 'object', source: 'currentReduxState'}
+    redux: {type: 'object', source: 'redux'},
+    info: {type: 'object', source: 'info'}
 };
 
 function render({props}) {
-    const {redux, reduxState} = props;
-    const {info} = reduxState;
+    const {redux, info} = props;
     return (
             <InfoBar info={info} {...bindActionCreators(infoActions, redux.dispatch)}/>
     );
