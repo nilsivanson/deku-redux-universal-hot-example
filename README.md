@@ -10,7 +10,7 @@ Beware of dirty hacks.
 * Isomorphic/Universal rendering
 * Both client and server make calls to load data from separate API server
 * [Deku](https://github.com/dekujs/deku)
-* [Crossroads Router](https://github.com/rackt/react-router)
+* [Crossroads Router](https://github.com/millermedeiros/crossroads.js)
 * [Materialize CSS](http://materializecss.com/) due to lack of material-ui components
 * [Express](http://expressjs.com)
 * [Babel](http://babeljs.io) for ES6 and ES7 magic
