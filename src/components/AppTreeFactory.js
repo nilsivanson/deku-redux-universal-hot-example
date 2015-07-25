@@ -6,18 +6,18 @@ import createRedux from '../redux/create';
 import ApiClient from '../ApiClient';
 
 // * state is the state of the application
-// to start a new application with an old state just redux.getState() and inject
+// to start a new application with an old state just store.getState() and inject
 // * request is the express request that is given on server side rendering
 // since this is undefined on browser side we also be know that code is
 // running in the browser when it is undefined
 export default function AppTreeFactory(state, request) {
     const isServerSide = !!request;
     const client = new ApiClient(request);
-    const redux = createRedux(client, state);
+    const store = createRedux(client, state);
 
     const router = crossroads.create();
     router.go = (path) => {
-        if (!isServerSide) history.pushState(redux.getState(), path, path);
+        if (!isServerSide) history.pushState(store.getState(), path, path);
         router.parse(path);
     };
     // generateGo is used for click handlers in components and views
@@ -39,12 +39,12 @@ export default function AppTreeFactory(state, request) {
 
     const appTree = deku().use(AppRouter(router));
     if (isServerSide) appTree.option('validateProps', true);
-    appTree.set('redux', redux);
+    appTree.set('store', store);
     updateState(appTree);
 
-    // subscribe app tree to redux changes in state and store a handler for teardown
-    const unsubscribeRedux = redux.subscribe(() => updateState(appTree));
-    appTree.set('reduxUnsubscribe', unsubscribeRedux);
+    // subscribe app tree to store changes in state and store a handler for teardown
+    const unsubscribeStore = store.subscribe(() => updateState(appTree));
+    appTree.set('storeUnsubscribe', unsubscribeStore);
 
     // mount the application container on the application tree
     appTree.mount(<App/>);
@@ -60,8 +60,8 @@ export default function AppTreeFactory(state, request) {
 }
 
 function updateState(appTree) {
-    const redux = appTree.sources.redux;
-    const state = redux.getState();
+    const store = appTree.sources.store;
+    const state = store.getState();
 
     // set minimal values on the app tree for each store so that we can use them
     // directly on props
